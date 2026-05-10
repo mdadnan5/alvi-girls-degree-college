@@ -19,7 +19,7 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/85 to-slate-900/80" />
         <div className="relative max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl font-bold mb-4">About Alvi Girls GDC</h1>
+          <h1 className="text-5xl font-bold mb-4">About Alvi Girls Degree College</h1>
           <p className="text-indigo-200 text-lg">A legacy of excellence in education since 2011</p>
         </div>
       </section>
@@ -113,7 +113,7 @@ export default function AboutPage() {
                 />
               </div>
               <div className="font-bold text-gray-900 text-lg">Dr. Ahmad Principal</div>
-              <div className="text-indigo-600 text-sm">Principal, Alvi Girls GDC</div>
+              <div className="text-indigo-600 text-sm">Principal, Alvi Girls Degree College</div>
               <div className="text-gray-400 text-xs mt-1">Ph.D., M.Ed. | 25+ Years Experience</div>
             </div>
             <div className="lg:col-span-2 relative">

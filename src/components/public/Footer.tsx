@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-white font-bold text-xl">
               <GraduationCap className="w-7 h-7 text-indigo-400" />
-              <span>Alvi Girls GDC</span>
+              <span>Alvi Girls Degree College</span>
             </div>
             <p className="text-sm leading-relaxed">
               Alvi Girls Degree College — premier institution committed to academic excellence and holistic development since 2011.

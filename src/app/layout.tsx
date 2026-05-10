@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: { default: "Alvi Government Degree College", template: "%s | Alvi GDC" },
+  title: { default: "Alvi Girls Degree College", template: "%s | Alvi GDC" },
   description: "Premier government degree college offering quality education in arts, science, and commerce.",
   keywords: ["college", "education", "degree", "government college", "Alvi GDC"],
 };
