@@ -1,0 +1,105 @@
+"use client";
+import { useState, useEffect, useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { facultySchema, FacultyInput } from "@/validations";
+import { IFaculty } from "@/types";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
+import AdminTable from "@/components/admin/AdminTable";
+import { toast } from "sonner";
+import { Plus } from "lucide-react";
+
+export default function AdminFacultyPage() {
+  const [faculty, setFaculty] = useState<IFaculty[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState<IFaculty | null>(null);
+
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FacultyInput>({ resolver: zodResolver(facultySchema) });
+
+  const fetchFaculty = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/faculty");
+      const data = await res.json();
+      setFaculty(Array.isArray(data) ? data : []);
+    } finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { fetchFaculty(); }, [fetchFaculty]);
+
+  const openCreate = () => { setEditing(null); reset({}); setModalOpen(true); };
+  const openEdit = (member: IFaculty) => {
+    setEditing(member);
+    reset({ name: member.name, designation: member.designation, department: member.department, image: member.image, socialLinks: member.socialLinks });
+    setModalOpen(true);
+  };
+
+  const onSubmit = async (data: FacultyInput) => {
+    try {
+      const url = editing ? `/api/faculty/${editing._id}` : "/api/faculty";
+      const method = editing ? "PUT" : "POST";
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (!res.ok) throw new Error();
+      toast.success(editing ? "Faculty updated!" : "Faculty added!");
+      setModalOpen(false);
+      fetchFaculty();
+    } catch { toast.error("Something went wrong"); }
+  };
+
+  const onDelete = async (id: string) => {
+    if (!confirm("Delete this faculty member?")) return;
+    await fetch(`/api/faculty/${id}`, { method: "DELETE" });
+    toast.success("Faculty deleted");
+    fetchFaculty();
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Faculty</h1>
+          <p className="text-gray-500 text-sm mt-1">Manage faculty members and their profiles</p>
+        </div>
+        <Button onClick={openCreate} className="gap-2"><Plus className="w-4 h-4" /> Add Faculty</Button>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <AdminTable
+          data={faculty}
+          loading={loading}
+          columns={[
+            { key: "name", label: "Name" },
+            { key: "designation", label: "Designation" },
+            { key: "department", label: "Department" },
+          ]}
+          onEdit={openEdit}
+          onDelete={onDelete}
+        />
+      </div>
+
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Edit Faculty" : "Add Faculty"} className="max-w-xl">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <Input label="Full Name" placeholder="Dr. John Doe" error={errors.name?.message} {...register("name")} />
+          <div className="grid grid-cols-2 gap-4">
+            <Input label="Designation" placeholder="Professor" error={errors.designation?.message} {...register("designation")} />
+            <Input label="Department" placeholder="Mathematics" error={errors.department?.message} {...register("department")} />
+          </div>
+          <Input label="Image URL (optional)" placeholder="https://..." {...register("image")} />
+          <div className="space-y-3">
+            <p className="text-sm font-medium text-gray-700">Social Links (optional)</p>
+            <Input placeholder="LinkedIn URL" {...register("socialLinks.linkedin")} />
+            <Input placeholder="Twitter URL" {...register("socialLinks.twitter")} />
+            <Input placeholder="Email" {...register("socialLinks.email")} />
+          </div>
+          <div className="flex gap-3 pt-2">
+            <Button type="button" variant="secondary" onClick={() => setModalOpen(false)} className="flex-1">Cancel</Button>
+            <Button type="submit" loading={isSubmitting} className="flex-1">{editing ? "Update" : "Add"}</Button>
+          </div>
+        </form>
+      </Modal>
+    </div>
+  );
+}
