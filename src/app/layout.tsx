@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: { default: "Alvi Girls Degree College", template: "%s | Alvi GDC" },
-  description: "Premier government degree college offering quality education in arts, science, and commerce.",
-  keywords: ["college", "education", "degree", "government college", "Alvi GDC"],
+  description: "Premier degree college offering quality education in arts, science, and commerce.",
+  keywords: ["college", "education", "degree", "Alvi Girls Degree College", "Alvi GDC", "Uttar Pradesh", "India", "NAAC A+", "undergraduate", "postgraduate", "courses", "faculty", "events"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

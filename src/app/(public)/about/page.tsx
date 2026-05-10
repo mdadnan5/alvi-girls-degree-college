@@ -135,7 +135,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { icon: Award, title: "NAAC A+ Accreditation", desc: "Recognized for outstanding academic quality and infrastructure by the National Assessment and Accreditation Council.", img: "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=400&q=80" },
-              { icon: Building2, title: "State Best College Award", desc: "Awarded the Best Government College in the state for three consecutive years by the State Education Board.", img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&q=80" },
+              { icon: Building2, title: "State Best College Award", desc: "Awarded the Best Girls College in the state for three consecutive years by the State Education Board.", img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&q=80" },
               { icon: Target, title: "100% Placement Record", desc: "Our students consistently achieve excellent placement rates with top companies and government organizations.", img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&q=80" },
             ].map(({ icon: Icon, title, desc, img }) => (
               <div key={title} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
