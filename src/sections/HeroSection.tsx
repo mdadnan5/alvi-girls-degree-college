@@ -55,7 +55,7 @@ export default function HeroSection() {
           </div>
 
           <div className="flex flex-wrap gap-8 pt-2">
-            {[["5000+", "Students"], ["150+", "Faculty"], ["40+", "Courses"], ["35+", "Years"]].map(([num, label]) => (
+            {[["5000+", "Students"], ["50+", "Faculty"], ["10+", "Courses"], ["15+", "Years"]].map(([num, label]) => (
               <div key={label}>
                 <div className="text-2xl font-bold text-white">{num}</div>
                 <div className="text-sm text-indigo-300">{label}</div>
@@ -111,7 +111,7 @@ export default function HeroSection() {
               <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-xl">🏆</div>
               <div>
                 <p className="font-bold text-gray-900 text-sm">#1 College</p>
-                <p className="text-xs text-gray-400">State Ranking</p>
+                <p className="text-xs text-gray-400">District Ranking</p>
               </div>
             </motion.div>
 
@@ -121,7 +121,7 @@ export default function HeroSection() {
               transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
               className="absolute bottom-16 right-4 bg-white rounded-2xl shadow-2xl p-4"
             >
-              <p className="text-2xl font-bold text-indigo-600">100%</p>
+              <p className="text-2xl font-bold text-indigo-600">90%</p>
               <p className="text-xs text-gray-400">Placement Rate</p>
             </motion.div>
           </div>

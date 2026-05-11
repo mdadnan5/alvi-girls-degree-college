@@ -59,7 +59,7 @@ export default function AboutPage() {
       <section className="py-12 bg-gradient-to-r from-indigo-600 to-cyan-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
-            {[["2011", "Established"], ["5000+", "Students"], ["A+", "NAAC Grade"], ["150+", "Faculty"]].map(([val, lbl]) => (
+            {[["2011", "Established"], ["5000+", "Students"], ["A+", "NAAC Grade"], ["50+", "Faculty"]].map(([val, lbl]) => (
               <div key={lbl}>
                 <div className="text-4xl font-bold">{val}</div>
                 <div className="text-indigo-100 text-sm mt-1">{lbl}</div>
@@ -136,7 +136,7 @@ export default function AboutPage() {
             {[
               { icon: Award, title: "NAAC A+ Accreditation", desc: "Recognized for outstanding academic quality and infrastructure by the National Assessment and Accreditation Council.", img: "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=400&q=80" },
               { icon: Building2, title: "State Best College Award", desc: "Awarded the Best Girls College in the state for three consecutive years by the State Education Board.", img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&q=80" },
-              { icon: Target, title: "100% Placement Record", desc: "Our students consistently achieve excellent placement rates with top companies and government organizations.", img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&q=80" },
+              { icon: Target, title: "90% Placement Record", desc: "Our students consistently achieve excellent placement rates with top companies and government organizations.", img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&q=80" },
             ].map(({ icon: Icon, title, desc, img }) => (
               <div key={title} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
                 <div className="relative h-40">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Clock, DollarSign, CheckCircle, ArrowRight } from "lucide-react";
+import { Clock, IndianRupee, CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ICourse } from "@/types";
 import { connectDB } from "@/lib/db";
@@ -8,12 +8,12 @@ import Course from "@/models/Course";
 export const metadata: Metadata = { title: "Courses" };
 
 const fallback: ICourse[] = [
-  { _id: "1", title: "Bachelor of Arts (B.A.)", description: "A comprehensive program covering humanities, social sciences, languages, and literature. Specializations available in English, History, Political Science, and Sociology.", duration: "3 Years", fees: "₹15,000/yr", eligibility: "10+2 Pass from any stream", image: "", createdAt: "" },
-  { _id: "2", title: "Bachelor of Science (B.Sc.)", description: "Rigorous science program with specializations in Physics, Chemistry, Mathematics, Biology, and Computer Science.", duration: "3 Years", fees: "₹18,000/yr", eligibility: "10+2 with Science stream", image: "", createdAt: "" },
-  { _id: "3", title: "Bachelor of Commerce (B.Com)", description: "Commerce program covering accounting, finance, taxation, business law, and management principles.", duration: "3 Years", fees: "₹16,000/yr", eligibility: "10+2 Pass from any stream", image: "", createdAt: "" },
-  { _id: "4", title: "Master of Arts (M.A.)", description: "Advanced postgraduate program with research focus in English Literature, History, and Political Science.", duration: "2 Years", fees: "₹20,000/yr", eligibility: "Bachelor's degree in relevant subject", image: "", createdAt: "" },
-  { _id: "5", title: "Master of Science (M.Sc.)", description: "Postgraduate science program with advanced research in Mathematics, Physics, and Chemistry.", duration: "2 Years", fees: "₹22,000/yr", eligibility: "B.Sc. in relevant subject", image: "", createdAt: "" },
-  { _id: "6", title: "Master of Commerce (M.Com)", description: "Advanced commerce program focusing on advanced accounting, financial management, and business strategy.", duration: "2 Years", fees: "₹21,000/yr", eligibility: "B.Com or equivalent", image: "", createdAt: "" },
+  { _id: "1", title: "Bachelor of Arts (B.A.)", description: "A comprehensive program covering humanities, social sciences, languages, and literature. Specializations available in English, History, Political Science, and Sociology.", duration: "3 Years", fees: "15,000/yr", eligibility: "10+2 Pass from any stream", image: "", createdAt: "" },
+  { _id: "2", title: "Bachelor of Science (B.Sc.)", description: "Rigorous science program with specializations in Physics, Chemistry, Mathematics, Biology, and Computer Science.", duration: "3 Years", fees: "18,000/yr", eligibility: "10+2 with Science stream", image: "", createdAt: "" },
+  { _id: "3", title: "Bachelor of Commerce (B.Com)", description: "Commerce program covering accounting, finance, taxation, business law, and management principles.", duration: "3 Years", fees: "16,000/yr", eligibility: "10+2 Pass from any stream", image: "", createdAt: "" },
+  { _id: "4", title: "Master of Arts (M.A.)", description: "Advanced postgraduate program with research focus in English Literature, History, and Political Science.", duration: "2 Years", fees: "20,000/yr", eligibility: "Bachelor's degree in relevant subject", image: "", createdAt: "" },
+  { _id: "5", title: "Master of Science (M.Sc.)", description: "Postgraduate science program with advanced research in Mathematics, Physics, and Chemistry.", duration: "2 Years", fees: "22,000/yr", eligibility: "B.Sc. in relevant subject", image: "", createdAt: "" },
+  { _id: "6", title: "Master of Commerce (M.Com)", description: "Advanced commerce program focusing on advanced accounting, financial management, and business strategy.", duration: "2 Years", fees: "21,000/yr", eligibility: "B.Com or equivalent", image: "", createdAt: "" },
 ];
 
 async function getCourses(): Promise<ICourse[]> {
@@ -54,7 +54,7 @@ export default async function CoursesPage() {
                       <span><strong>Duration:</strong> {course.duration}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <DollarSign className="w-4 h-4 text-indigo-500" />
+                      <IndianRupee className="w-4 h-4 text-indigo-500" />
                       <span><strong>Fees:</strong> {course.fees}</span>
                     </div>
                     <div className="flex items-start gap-2 text-sm text-gray-600">

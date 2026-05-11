@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Clock, DollarSign, ArrowRight } from "lucide-react";
+import { Clock, IndianRupee, ArrowRight } from "lucide-react";
 import { ICourse } from "@/types";
 
 // All verified 200 OK
@@ -13,9 +13,9 @@ const courseImages = [
 ];
 
 const fallbackCourses: ICourse[] = [
-  { _id: "1", title: "Bachelor of Arts", description: "Comprehensive arts program covering humanities, social sciences, and languages.", duration: "3 Years", fees: "₹15,000/yr", eligibility: "10+2 Pass", image: "", createdAt: "" },
-  { _id: "2", title: "Bachelor of Science", description: "Science program with specializations in Physics, Chemistry, and Mathematics.", duration: "3 Years", fees: "₹18,000/yr", eligibility: "10+2 (Science)", image: "", createdAt: "" },
-  { _id: "3", title: "Bachelor of Commerce", description: "Commerce program covering accounting, finance, and business management.", duration: "3 Years", fees: "₹16,000/yr", eligibility: "10+2 Pass", image: "", createdAt: "" },
+  { _id: "1", title: "Bachelor of Arts", description: "Comprehensive arts program covering humanities, social sciences, and languages.", duration: "3 Years", fees: "15,000/yr", eligibility: "10+2 Pass", image: "", createdAt: "" },
+  { _id: "2", title: "Bachelor of Science", description: "Science program with specializations in Physics, Chemistry, and Mathematics.", duration: "3 Years", fees: "18,000/yr", eligibility: "10+2 (Science)", image: "", createdAt: "" },
+  { _id: "3", title: "Bachelor of Commerce", description: "Commerce program covering accounting, finance, and business management.", duration: "3 Years", fees: "16,000/yr", eligibility: "10+2 Pass", image: "", createdAt: "" },
 ];
 
 export default function CoursesPreview({ courses }: { courses?: ICourse[] }) {
@@ -60,7 +60,7 @@ export default function CoursesPreview({ courses }: { courses?: ICourse[] }) {
                 <p className="text-gray-500 text-sm mb-4 line-clamp-2">{course.description}</p>
                 <div className="flex gap-4 text-xs text-gray-500 mb-4">
                   <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-indigo-400" />{course.duration}</span>
-                  <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-indigo-400" />{course.fees}</span>
+                  <span className="flex items-center gap-1"><IndianRupee className="w-3.5 h-3.5 text-indigo-400" />{course.fees}</span>
                 </div>
                 <Link href="/courses" className="text-indigo-600 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
                   Learn More <ArrowRight className="w-4 h-4" />
