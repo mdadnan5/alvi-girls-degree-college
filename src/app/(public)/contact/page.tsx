@@ -12,6 +12,7 @@ import { useState } from "react";
 const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
+  phone: z.string().min(10, "Enter a valid phone number"),
   subject: z.string().min(3),
   message: z.string().min(10),
 });
@@ -22,7 +23,12 @@ export default function ContactPage() {
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((r) => setTimeout(r, 1000));
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) { toast.error("Failed to send. Please try again."); return; }
     toast.success("Message sent! We'll get back to you soon.");
     setSent(true);
     reset();
@@ -58,6 +64,7 @@ export default function ContactPage() {
                       <Input label="Your Name" placeholder="Full name" error={errors.name?.message} {...register("name")} />
                       <Input label="Email" type="email" placeholder="your@email.com" error={errors.email?.message} {...register("email")} />
                     </div>
+                    <Input label="Phone Number" type="tel" placeholder="+91 XXXXX XXXXX" error={errors.phone?.message} {...register("phone")} />
                     <Input label="Subject" placeholder="How can we help?" error={errors.subject?.message} {...register("subject")} />
                     <Textarea label="Message" placeholder="Your message..." rows={5} error={errors.message?.message} {...register("message")} />
                     <Button type="submit" size="lg" loading={isSubmitting} className="w-full">Send Message</Button>
