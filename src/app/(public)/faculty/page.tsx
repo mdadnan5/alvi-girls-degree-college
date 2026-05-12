@@ -41,8 +41,12 @@ export default function FacultyPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {faculty.map((member) => (
                 <div key={member._id} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center group">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                    {member.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                  <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-4">
+                    <img
+                      src={member.image?.replace(/^http:\/\//, 'https://') || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=4F46E5&color=fff&size=128`}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <h3 className="font-bold text-gray-900 text-lg">{member.name}</h3>
                   <p className="text-indigo-600 text-sm font-medium mt-1">{member.designation}</p>
