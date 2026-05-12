@@ -2,26 +2,21 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, ImageIcon } from "lucide-react";
-import { IGallery } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchGallery } from "@/store/slices/gallerySlice";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 
 const categories = ["All", "Campus", "Events", "Sports", "Cultural", "Academic"];
 
 export default function GalleryClient() {
-  const [items, setItems] = useState<IGallery[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { data, loading } = useAppSelector((s) => s.gallery);
   const [active, setActive] = useState("All");
   const [preview, setPreview] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetch("/api/gallery")
-      .then((r) => r.json())
-      .then((d) => setItems(Array.isArray(d) ? d : []))
-      .catch(() => setItems([]))
-      .finally(() => setLoading(false));
-  }, []);
+  useEffect(() => { dispatch(fetchGallery()); }, [dispatch]);
 
-  const filtered = active === "All" ? items : items.filter((i) => i.category === active);
+  const filtered = active === "All" ? data : data.filter((i) => i.category === active);
 
   return (
     <div className="space-y-8">

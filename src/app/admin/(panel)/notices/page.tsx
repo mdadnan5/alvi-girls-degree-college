@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { noticeSchema, NoticeInput } from "@/validations";
@@ -10,52 +10,40 @@ import { Modal } from "@/components/ui/Modal";
 import AdminTable from "@/components/admin/AdminTable";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchNotices, createNotice, updateNotice, deleteNotice } from "@/store/slices/noticesSlice";
+import { useState } from "react";
 
 export default function AdminNoticesPage() {
-  const [notices, setNotices] = useState<INotice[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { data: notices, loading } = useAppSelector((s) => s.notices);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<INotice | null>(null);
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<NoticeInput>({
-    resolver: zodResolver(noticeSchema),
-  });
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<NoticeInput>({ resolver: zodResolver(noticeSchema) });
 
-  const fetchNotices = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/notices");
-      const data = await res.json();
-      setNotices(Array.isArray(data) ? data : []);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { fetchNotices(); }, [fetchNotices]);
+  useEffect(() => { dispatch(fetchNotices("")); }, [dispatch]);
 
   const openCreate = () => { setEditing(null); reset({}); setModalOpen(true); };
   const openEdit = (notice: INotice) => { setEditing(notice); reset({ title: notice.title, fileUrl: notice.fileUrl }); setModalOpen(true); };
 
   const onSubmit = async (data: NoticeInput) => {
     try {
-      const url = editing ? `/api/notices/${editing._id}` : "/api/notices";
-      const method = editing ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!res.ok) throw new Error();
-      toast.success(editing ? "Notice updated!" : "Notice created!");
+      if (editing) {
+        await dispatch(updateNotice({ id: editing._id, body: data })).unwrap();
+        toast.success("Notice updated!");
+      } else {
+        await dispatch(createNotice(data)).unwrap();
+        toast.success("Notice created!");
+      }
       setModalOpen(false);
-      fetchNotices();
-    } catch {
-      toast.error("Something went wrong");
-    }
+    } catch { toast.error("Something went wrong"); }
   };
 
   const onDelete = async (id: string) => {
     if (!confirm("Delete this notice?")) return;
-    await fetch(`/api/notices/${id}`, { method: "DELETE" });
+    await dispatch(deleteNotice(id)).unwrap();
     toast.success("Notice deleted");
-    fetchNotices();
   };
 
   return (

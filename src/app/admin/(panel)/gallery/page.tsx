@@ -1,52 +1,41 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { gallerySchema, GalleryInput } from "@/validations";
-import { IGallery } from "@/types";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { toast } from "sonner";
 import { Plus, Trash2, ImageIcon } from "lucide-react";
 import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchGallery, createGalleryItem, deleteGalleryItem } from "@/store/slices/gallerySlice";
 
 const categories = ["Campus", "Events", "Sports", "Cultural", "Academic"];
 
 export default function AdminGalleryPage() {
-  const [items, setItems] = useState<IGallery[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { data: items, loading } = useAppSelector((s) => s.gallery);
   const [modalOpen, setModalOpen] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<GalleryInput>({ resolver: zodResolver(gallerySchema) });
 
-  const fetchGallery = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/gallery");
-      const data = await res.json();
-      setItems(Array.isArray(data) ? data : []);
-    } finally { setLoading(false); }
-  }, []);
-
-  useEffect(() => { fetchGallery(); }, [fetchGallery]);
+  useEffect(() => { dispatch(fetchGallery()); }, [dispatch]);
 
   const onSubmit = async (data: GalleryInput) => {
     try {
-      const res = await fetch("/api/gallery", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!res.ok) throw new Error();
+      await dispatch(createGalleryItem(data)).unwrap();
       toast.success("Image added!");
       setModalOpen(false);
       reset();
-      fetchGallery();
     } catch { toast.error("Something went wrong"); }
   };
 
   const onDelete = async (id: string) => {
     if (!confirm("Delete this image?")) return;
-    await fetch(`/api/gallery/${id}`, { method: "DELETE" });
+    await dispatch(deleteGalleryItem(id)).unwrap();
     toast.success("Image deleted");
-    fetchGallery();
   };
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { eventSchema, EventInput } from "@/validations";
@@ -11,25 +11,18 @@ import { Modal } from "@/components/ui/Modal";
 import AdminTable from "@/components/admin/AdminTable";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchEvents, createEvent, updateEvent, deleteEvent } from "@/store/slices/eventsSlice";
 
 export default function AdminEventsPage() {
-  const [events, setEvents] = useState<IEvent[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { data: events, loading } = useAppSelector((s) => s.events);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<IEvent | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<EventInput>({ resolver: zodResolver(eventSchema) });
 
-  const fetchEvents = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/events");
-      const data = await res.json();
-      setEvents(Array.isArray(data) ? data : []);
-    } finally { setLoading(false); }
-  }, []);
-
-  useEffect(() => { fetchEvents(); }, [fetchEvents]);
+  useEffect(() => { dispatch(fetchEvents()); }, [dispatch]);
 
   const openCreate = () => { setEditing(null); reset({}); setModalOpen(true); };
   const openEdit = (event: IEvent) => {
@@ -40,21 +33,21 @@ export default function AdminEventsPage() {
 
   const onSubmit = async (data: EventInput) => {
     try {
-      const url = editing ? `/api/events/${editing._id}` : "/api/events";
-      const method = editing ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!res.ok) throw new Error();
-      toast.success(editing ? "Event updated!" : "Event created!");
+      if (editing) {
+        await dispatch(updateEvent({ id: editing._id, body: data })).unwrap();
+        toast.success("Event updated!");
+      } else {
+        await dispatch(createEvent(data)).unwrap();
+        toast.success("Event created!");
+      }
       setModalOpen(false);
-      fetchEvents();
     } catch { toast.error("Something went wrong"); }
   };
 
   const onDelete = async (id: string) => {
     if (!confirm("Delete this event?")) return;
-    await fetch(`/api/events/${id}`, { method: "DELETE" });
+    await dispatch(deleteEvent(id)).unwrap();
     toast.success("Event deleted");
-    fetchEvents();
   };
 
   return (

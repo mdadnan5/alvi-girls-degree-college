@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Bell, Download, Search } from "lucide-react";
 import { INotice } from "@/types";
 import { TableSkeleton } from "@/components/ui/Skeleton";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchNotices } from "@/store/slices/noticesSlice";
 
 const STATIC_NOTICES: INotice[] = [
   { _id: "s1", title: "Examination Schedule Notice — College Exams Starting from 18th May 2026", fileUrl: "", createdAt: "2026-05-01" },
@@ -10,28 +12,17 @@ const STATIC_NOTICES: INotice[] = [
 ];
 
 export default function NoticesClient() {
-  const [notices, setNotices] = useState<INotice[]>([]);
+  const dispatch = useAppDispatch();
+  const { data, loading } = useAppSelector((s) => s.notices);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/notices?search=${encodeURIComponent(search)}`);
-        const data = await res.json();
-        setNotices(Array.isArray(data) && data.length ? data : STATIC_NOTICES);
-      } catch {
-        const filtered = STATIC_NOTICES.filter(n =>
-          n.title.toLowerCase().includes(search.toLowerCase())
-        );
-        setNotices(filtered);
-      } finally {
-        setLoading(false);
-      }
-    }, 300);
+    const timer = setTimeout(() => { dispatch(fetchNotices(search)); }, 300);
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, dispatch]);
+
+  const notices = data.length ? data : STATIC_NOTICES;
+  const filtered = search ? notices.filter((n) => n.title.toLowerCase().includes(search.toLowerCase())) : notices;
 
   return (
     <div className="space-y-6">
@@ -47,14 +38,14 @@ export default function NoticesClient() {
 
       {loading ? (
         <TableSkeleton rows={6} />
-      ) : notices.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
           <Bell className="w-12 h-12 mx-auto mb-3 opacity-30" />
           <p>No notices found</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {notices.map((notice) => (
+          {filtered.map((notice) => (
             <div key={notice._id} className="flex items-center gap-4 bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
               <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center shrink-0">
                 <Bell className="w-5 h-5 text-indigo-600" />

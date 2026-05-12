@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { facultySchema, FacultyInput } from "@/validations";
@@ -10,25 +10,18 @@ import { Modal } from "@/components/ui/Modal";
 import AdminTable from "@/components/admin/AdminTable";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchFaculty, createFaculty, updateFaculty, deleteFaculty } from "@/store/slices/facultySlice";
 
 export default function AdminFacultyPage() {
-  const [faculty, setFaculty] = useState<IFaculty[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { data: faculty, loading } = useAppSelector((s) => s.faculty);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<IFaculty | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FacultyInput>({ resolver: zodResolver(facultySchema) });
 
-  const fetchFaculty = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/faculty");
-      const data = await res.json();
-      setFaculty(Array.isArray(data) ? data : []);
-    } finally { setLoading(false); }
-  }, []);
-
-  useEffect(() => { fetchFaculty(); }, [fetchFaculty]);
+  useEffect(() => { dispatch(fetchFaculty()); }, [dispatch]);
 
   const openCreate = () => { setEditing(null); reset({}); setModalOpen(true); };
   const openEdit = (member: IFaculty) => {
@@ -39,21 +32,21 @@ export default function AdminFacultyPage() {
 
   const onSubmit = async (data: FacultyInput) => {
     try {
-      const url = editing ? `/api/faculty/${editing._id}` : "/api/faculty";
-      const method = editing ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!res.ok) throw new Error();
-      toast.success(editing ? "Faculty updated!" : "Faculty added!");
+      if (editing) {
+        await dispatch(updateFaculty({ id: editing._id, body: data })).unwrap();
+        toast.success("Faculty updated!");
+      } else {
+        await dispatch(createFaculty(data)).unwrap();
+        toast.success("Faculty added!");
+      }
       setModalOpen(false);
-      fetchFaculty();
     } catch { toast.error("Something went wrong"); }
   };
 
   const onDelete = async (id: string) => {
     if (!confirm("Delete this faculty member?")) return;
-    await fetch(`/api/faculty/${id}`, { method: "DELETE" });
+    await dispatch(deleteFaculty(id)).unwrap();
     toast.success("Faculty deleted");
-    fetchFaculty();
   };
 
   return (

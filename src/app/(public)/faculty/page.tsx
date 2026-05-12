@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+"use client";
+import { useEffect } from "react";
 import { Globe, Share2, Mail } from "lucide-react";
 import { IFaculty } from "@/types";
-import { connectDB } from "@/lib/db";
-import Faculty from "@/models/Faculty";
-
-export const metadata: Metadata = { title: "Faculty" };
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchFaculty } from "@/store/slices/facultySlice";
+import { CardSkeleton } from "@/components/ui/Skeleton";
 
 const fallback: IFaculty[] = [
   { _id: "1", name: "Dr. Aisha Khan", designation: "Professor & HOD", department: "Mathematics", image: "", socialLinks: { linkedin: "", twitter: "", email: "aisha@alvigdc.edu" }, createdAt: "" },
@@ -15,19 +15,12 @@ const fallback: IFaculty[] = [
   { _id: "6", name: "Prof. Arjun Sharma", designation: "Associate Professor", department: "History", image: "", socialLinks: { linkedin: "", twitter: "", email: "arjun@alvigdc.edu" }, createdAt: "" },
 ];
 
-async function getFaculty(): Promise<IFaculty[]> {
-  try {
-    await connectDB();
-    const data = await Faculty.find().sort({ createdAt: -1 }).lean();
-    return JSON.parse(JSON.stringify(data));
-  } catch {
-    return fallback;
-  }
-}
+export default function FacultyPage() {
+  const dispatch = useAppDispatch();
+  const { data, loading } = useAppSelector((s) => s.faculty);
+  const faculty = data.length ? data : fallback;
 
-export default async function FacultyPage() {
-  const faculty = await getFaculty();
-  const data = faculty.length ? faculty : fallback;
+  useEffect(() => { dispatch(fetchFaculty()); }, [dispatch]);
 
   return (
     <div className="min-h-screen">
@@ -40,35 +33,41 @@ export default async function FacultyPage() {
 
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.map((member) => (
-              <div key={member._id} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center group">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                  {member.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+          {loading ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {faculty.map((member) => (
+                <div key={member._id} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center group">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
+                    {member.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                  </div>
+                  <h3 className="font-bold text-gray-900 text-lg">{member.name}</h3>
+                  <p className="text-indigo-600 text-sm font-medium mt-1">{member.designation}</p>
+                  <p className="text-gray-400 text-sm mt-0.5">{member.department}</p>
+                  <div className="flex justify-center gap-3 mt-4">
+                    {member.socialLinks?.linkedin && (
+                      <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-indigo-100 hover:text-indigo-600 transition-colors">
+                        <Globe className="w-4 h-4" />
+                      </a>
+                    )}
+                    {member.socialLinks?.twitter && (
+                      <a href={member.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-indigo-100 hover:text-indigo-600 transition-colors">
+                        <Share2 className="w-4 h-4" />
+                      </a>
+                    )}
+                    {member.socialLinks?.email && (
+                      <a href={`mailto:${member.socialLinks.email}`} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-indigo-100 hover:text-indigo-600 transition-colors">
+                        <Mail className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <h3 className="font-bold text-gray-900 text-lg">{member.name}</h3>
-                <p className="text-indigo-600 text-sm font-medium mt-1">{member.designation}</p>
-                <p className="text-gray-400 text-sm mt-0.5">{member.department}</p>
-                <div className="flex justify-center gap-3 mt-4">
-                  {member.socialLinks?.linkedin && (
-                    <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-indigo-100 hover:text-indigo-600 transition-colors">
-                      <Globe className="w-4 h-4" />
-                    </a>
-                  )}
-                  {member.socialLinks?.twitter && (
-                    <a href={member.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-indigo-100 hover:text-indigo-600 transition-colors">
-                      <Share2 className="w-4 h-4" />
-                    </a>
-                  )}
-                  {member.socialLinks?.email && (
-                    <a href={`mailto:${member.socialLinks.email}`} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-indigo-100 hover:text-indigo-600 transition-colors">
-                      <Mail className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

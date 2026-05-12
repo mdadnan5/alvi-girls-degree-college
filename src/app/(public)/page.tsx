@@ -1,3 +1,5 @@
+"use client";
+import { useEffect } from "react";
 import HeroSection from "@/sections/HeroSection";
 import StatsSection from "@/sections/StatsSection";
 import CoursesPreview from "@/sections/CoursesPreview";
@@ -6,32 +8,23 @@ import NoticeBoard from "@/sections/NoticeBoard";
 import Testimonials from "@/sections/Testimonials";
 import GalleryPreview from "@/sections/GalleryPreview";
 import AdmissionCTA from "@/sections/AdmissionCTA";
-import { connectDB } from "@/lib/db";
-import CourseModel from "@/models/Course";
-import EventModel from "@/models/Event";
-import NoticeModel from "@/models/Notice";
-import { ICourse, IEvent, INotice } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchCourses } from "@/store/slices/coursesSlice";
+import { fetchEvents } from "@/store/slices/eventsSlice";
+import { fetchNotices } from "@/store/slices/noticesSlice";
 
-async function getData() {
-  try {
-    await connectDB();
-    const [courses, events, notices] = await Promise.all([
-      CourseModel.find().sort({ createdAt: -1 }).limit(3).lean(),
-      EventModel.find().sort({ date: 1 }).limit(3).lean(),
-      NoticeModel.find().sort({ createdAt: -1 }).limit(4).lean(),
-    ]);
-    return {
-      courses: JSON.parse(JSON.stringify(courses)) as ICourse[],
-      events: JSON.parse(JSON.stringify(events)) as IEvent[],
-      notices: JSON.parse(JSON.stringify(notices)) as INotice[],
-    };
-  } catch {
-    return { courses: [], events: [], notices: [] };
-  }
-}
+export default function HomePage() {
+  const dispatch = useAppDispatch();
+  const courses = useAppSelector((s) => s.courses.data.slice(0, 3));
+  const events = useAppSelector((s) => s.events.data.slice(0, 3));
+  const notices = useAppSelector((s) => s.notices.data.slice(0, 4));
 
-export default async function HomePage() {
-  const { courses, events, notices } = await getData();
+  useEffect(() => {
+    dispatch(fetchCourses());
+    dispatch(fetchEvents());
+    dispatch(fetchNotices(""));
+  }, [dispatch]);
+
   return (
     <>
       <HeroSection />

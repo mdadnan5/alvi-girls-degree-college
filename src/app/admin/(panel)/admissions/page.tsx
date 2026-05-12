@@ -1,38 +1,25 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { IAdmission } from "@/types";
 import AdminTable from "@/components/admin/AdminTable";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchAdmissions, deleteAdmission, setPage } from "@/store/slices/admissionsSlice";
 
 export default function AdminAdmissionsPage() {
-  const [admissions, setAdmissions] = useState<IAdmission[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [pages, setPages] = useState(1);
-  const [total, setTotal] = useState(0);
+  const dispatch = useAppDispatch();
+  const { data: admissions, loading, page, pages, total } = useAppSelector((s) => s.admissions);
   const [selected, setSelected] = useState<IAdmission | null>(null);
 
-  const fetchAdmissions = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/admissions?page=${page}&limit=10`);
-      const data = await res.json();
-      setAdmissions(data.data || []);
-      setPages(data.pages || 1);
-      setTotal(data.total || 0);
-    } finally { setLoading(false); }
-  }, [page]);
-
-  useEffect(() => { fetchAdmissions(); }, [fetchAdmissions]);
+  useEffect(() => { dispatch(fetchAdmissions(page)); }, [dispatch, page]);
 
   const onDelete = async (id: string) => {
     if (!confirm("Delete this admission?")) return;
-    await fetch(`/api/admissions/${id}`, { method: "DELETE" });
+    await dispatch(deleteAdmission(id)).unwrap();
     toast.success("Admission deleted");
-    fetchAdmissions();
   };
 
   return (
@@ -63,10 +50,10 @@ export default function AdminAdmissionsPage() {
           <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
             <p className="text-sm text-gray-500">Page {page} of {pages}</p>
             <div className="flex gap-2">
-              <Button size="sm" variant="outline" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+              <Button size="sm" variant="outline" onClick={() => dispatch(setPage(Math.max(1, page - 1)))} disabled={page === 1}>
                 <ChevronLeft className="w-4 h-4" />
               </Button>
-              <Button size="sm" variant="outline" onClick={() => setPage((p) => Math.min(pages, p + 1))} disabled={page === pages}>
+              <Button size="sm" variant="outline" onClick={() => dispatch(setPage(Math.min(pages, page + 1)))} disabled={page === pages}>
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { courseSchema, CourseInput } from "@/validations";
@@ -11,25 +11,18 @@ import { Modal } from "@/components/ui/Modal";
 import AdminTable from "@/components/admin/AdminTable";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { fetchCourses, createCourse, updateCourse, deleteCourse } from "@/store/slices/coursesSlice";
 
 export default function AdminCoursesPage() {
-  const [courses, setCourses] = useState<ICourse[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { data: courses, loading } = useAppSelector((s) => s.courses);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<ICourse | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<CourseInput>({ resolver: zodResolver(courseSchema) });
 
-  const fetchCourses = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/courses");
-      const data = await res.json();
-      setCourses(Array.isArray(data) ? data : []);
-    } finally { setLoading(false); }
-  }, []);
-
-  useEffect(() => { fetchCourses(); }, [fetchCourses]);
+  useEffect(() => { dispatch(fetchCourses()); }, [dispatch]);
 
   const openCreate = () => { setEditing(null); reset({}); setModalOpen(true); };
   const openEdit = (course: ICourse) => {
@@ -40,21 +33,21 @@ export default function AdminCoursesPage() {
 
   const onSubmit = async (data: CourseInput) => {
     try {
-      const url = editing ? `/api/courses/${editing._id}` : "/api/courses";
-      const method = editing ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!res.ok) throw new Error();
-      toast.success(editing ? "Course updated!" : "Course created!");
+      if (editing) {
+        await dispatch(updateCourse({ id: editing._id, body: data })).unwrap();
+        toast.success("Course updated!");
+      } else {
+        await dispatch(createCourse(data)).unwrap();
+        toast.success("Course created!");
+      }
       setModalOpen(false);
-      fetchCourses();
     } catch { toast.error("Something went wrong"); }
   };
 
   const onDelete = async (id: string) => {
     if (!confirm("Delete this course?")) return;
-    await fetch(`/api/courses/${id}`, { method: "DELETE" });
+    await dispatch(deleteCourse(id)).unwrap();
     toast.success("Course deleted");
-    fetchCourses();
   };
 
   return (
