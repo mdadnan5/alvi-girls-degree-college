@@ -52,8 +52,6 @@ Create `.env.local` (already created):
 MONGODB_URI=mongodb://localhost:27017/alvi_gdc
 NEXTAUTH_SECRET=your-super-secret-key-change-in-production
 NEXTAUTH_URL=http://localhost:3000
-ADMIN_EMAIL=admin@alvigdc.edu
-ADMIN_PASSWORD=admin123
 ```
 
 ### 3. Start MongoDB
@@ -105,12 +103,6 @@ Open [http://localhost:3000](http://localhost:3000)
 | `/admin/gallery` | Manage gallery |
 | `/admin/admissions` | View applications |
 
-## Default Admin Credentials
-
-```
-Email:    admin@alvigdc.edu
-Password: admin123
-```
 
 > **Important:** Change these in `.env.local` before deploying to production.
 

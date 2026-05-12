@@ -15,6 +15,7 @@ const fallback: ICourse[] = [
   { _id: "4", title: "Master of Arts (M.A.)", description: "Advanced postgraduate program with research focus in English Literature, History, and Political Science.", duration: "2 Years", fees: "20,000/yr", eligibility: "Bachelor's degree in relevant subject", image: "", createdAt: "" },
   { _id: "5", title: "Master of Science (M.Sc.)", description: "Postgraduate science program with advanced research in Mathematics, Physics, and Chemistry.", duration: "2 Years", fees: "22,000/yr", eligibility: "B.Sc. in relevant subject", image: "", createdAt: "" },
   { _id: "6", title: "Master of Commerce (M.Com)", description: "Advanced commerce program focusing on advanced accounting, financial management, and business strategy.", duration: "2 Years", fees: "21,000/yr", eligibility: "B.Com or equivalent", image: "", createdAt: "" },
+  { _id: "7", title: "Mass Communication", description: "Specialized program in Journalism, Public Relations, Advertising, and Digital Media.", duration: "2 Years", fees: "19,000/yr", eligibility: "Bachelor's degree in any discipline", image: "", createdAt: "" }
 ];
 
 export default function CoursesPage() {

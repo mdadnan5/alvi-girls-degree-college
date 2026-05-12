@@ -42,9 +42,9 @@ export default function AdminLoginPage() {
             <Input label="Password" type="password" placeholder="••••••••" error={errors.password?.message} {...register("password")} />
             <Button type="submit" size="lg" loading={isSubmitting} className="w-full">Sign In</Button>
           </form>
-          <p className="text-center text-xs text-gray-400 mt-4">
+          {/* <p className="text-center text-xs text-gray-400 mt-4">
             Default: admin@alvigdc.edu / admin123
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

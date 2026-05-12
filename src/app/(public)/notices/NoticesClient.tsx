@@ -7,8 +7,8 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { fetchNotices } from "@/store/slices/noticesSlice";
 
 const STATIC_NOTICES: INotice[] = [
-  { _id: "s1", title: "Examination Schedule Notice — College Exams Starting from 18th May 2026", fileUrl: "", createdAt: "2026-05-01" },
-  { _id: "s2", title: "Admit Card Distribution — Collect Your Admit Card on 11th May 2026 at 10:00 AM Sharp", fileUrl: "", createdAt: "2026-04-28" },
+  { _id: "s1", title: "Admit Card Distribution — Collect Your Admit Card on 11th May 2026 at 10:00 AM Sharp", fileUrl: "", createdAt: "2026-05-01" },
+  { _id: "s2", title: "Examination Schedule Notice — College Exams Starting from 18th May 2026", fileUrl: "", createdAt: "2026-04-28" },
 ];
 
 export default function NoticesClient() {
