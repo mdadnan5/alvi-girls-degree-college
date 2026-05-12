@@ -19,7 +19,7 @@ export default function AdmissionCTA() {
       <div className="relative max-w-4xl mx-auto px-4 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <span className="inline-block bg-white/20 border border-white/30 text-white text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
-            Admissions Open 2024–25
+            Admissions Open 2025–26
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">Ready to Begin Your Journey?</h2>
           <p className="text-indigo-100 text-lg mb-8 max-w-2xl mx-auto">

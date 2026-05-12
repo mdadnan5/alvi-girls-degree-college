@@ -7,8 +7,8 @@ import { driveImage } from "@/lib/driveImage";
 
 const eventImages = [
   "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80",
-  "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80",
   "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80",
+  "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80",
 ];
 
 const fallback: IEvent[] = [

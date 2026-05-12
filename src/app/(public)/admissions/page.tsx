@@ -62,7 +62,7 @@ export default function AdmissionsPage() {
                 <h3 className="font-bold text-gray-900 text-lg mb-3">Need Help?</h3>
                 <p className="text-gray-500 text-sm mb-3">Contact our admissions office for assistance.</p>
                 <div className="text-sm space-y-1">
-                  <p className="text-gray-700"><strong>Phone:</strong> +91 98765 43210</p>
+                  <p className="text-gray-700"><strong>Phone:</strong> +91 9670234968</p>
                   <p className="text-gray-700"><strong>Email:</strong> admissions@alvigdc.edu</p>
                   <p className="text-gray-700"><strong>Hours:</strong> Mon–Sat, 9 AM – 5 PM</p>
                 </div>

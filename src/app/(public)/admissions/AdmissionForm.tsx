@@ -53,7 +53,7 @@ export default function AdmissionForm() {
         <Input label="Email Address" type="email" placeholder="your@email.com" error={errors.email?.message} {...register("email")} />
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
-        <Input label="Phone Number" placeholder="+91 98765 43210" error={errors.phone?.message} {...register("phone")} />
+        <Input label="Phone Number" placeholder="+91 9670234968" error={errors.phone?.message} {...register("phone")} />
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-gray-700">Course</label>
           <select

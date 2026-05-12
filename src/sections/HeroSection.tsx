@@ -30,7 +30,7 @@ export default function HeroSection() {
         >
           <div className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/30 rounded-full px-4 py-2 text-indigo-300 text-sm font-medium">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-            Admissions Open 2024–25
+            Admissions Open 2025–26
           </div>
 
           <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
@@ -55,7 +55,7 @@ export default function HeroSection() {
           </div>
 
           <div className="flex flex-wrap gap-8 pt-2">
-            {[["5000+", "Students"], ["50+", "Faculty"], ["10+", "Courses"], ["15+", "Years"]].map(([num, label]) => (
+            {[["800+", "Students"], ["30+", "Faculty"], ["10+", "Courses"], ["15+", "Years"]].map(([num, label]) => (
               <div key={label}>
                 <div className="text-2xl font-bold text-white">{num}</div>
                 <div className="text-sm text-indigo-300">{label}</div>

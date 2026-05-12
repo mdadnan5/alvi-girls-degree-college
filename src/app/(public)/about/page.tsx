@@ -59,7 +59,7 @@ export default function AboutPage() {
       <section className="py-12 bg-gradient-to-r from-indigo-600 to-cyan-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
-            {[["2011", "Established"], ["5000+", "Students"], ["A+", "NAAC Grade"], ["50+", "Faculty"]].map(([val, lbl]) => (
+            {[["2011", "Established"], ["800+", "Students"], ["A+", "NAAC Grade"], ["30+", "Faculty"]].map(([val, lbl]) => (
               <div key={lbl}>
                 <div className="text-4xl font-bold">{val}</div>
                 <div className="text-indigo-100 text-sm mt-1">{lbl}</div>
