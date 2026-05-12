@@ -35,7 +35,7 @@ const slice = createSlice({
     b.addCase(fetchCourses.pending, (s) => { s.loading = true; s.error = null; })
       .addCase(fetchCourses.fulfilled, (s, a) => { s.loading = false; s.data = a.payload; })
       .addCase(fetchCourses.rejected, (s, a) => { s.loading = false; s.error = a.error.message ?? null; })
-      .addCase(createCourse.fulfilled, (s, a) => { s.data.unshift(a.payload); })
+      .addCase(createCourse.fulfilled, (s, a) => { s.data.push(a.payload); })
       .addCase(updateCourse.fulfilled, (s, a) => { const i = s.data.findIndex((x) => x._id === a.payload._id); if (i !== -1) s.data[i] = a.payload; })
       .addCase(deleteCourse.fulfilled, (s, a) => { s.data = s.data.filter((x) => x._id !== a.payload); });
   },

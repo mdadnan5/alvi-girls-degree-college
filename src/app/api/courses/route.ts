@@ -4,7 +4,7 @@ import Course from "@/models/Course";
 
 export async function GET() {
   await connectDB();
-  const data = await Course.find().sort({ createdAt: -1 }).lean();
+  const data = await Course.find().sort({ createdAt: 1 }).lean();
   return NextResponse.json(data);
 }
 
