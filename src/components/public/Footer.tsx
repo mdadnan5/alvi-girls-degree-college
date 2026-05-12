@@ -47,7 +47,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 text-indigo-400 shrink-0" /><span>Chak Abusaed Urf Pooremiya, Uttar Pradesh 212402</span></li>
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-indigo-400" /><span>+91 96702 34968</span></li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-indigo-400" /><span>+91 9670234968</span></li>
               <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-indigo-400" /><span>info@alvigirlsgdc.edu</span></li>
             </ul>
           </div>

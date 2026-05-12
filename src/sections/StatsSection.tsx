@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { Users, BookOpen, Award, Building } from "lucide-react";
 
 const stats = [
-  { icon: Users, value: "5,000+", label: "Students Enrolled", color: "text-indigo-600", bg: "bg-indigo-50" },
-  { icon: BookOpen, value: "40+", label: "Courses Offered", color: "text-cyan-600", bg: "bg-cyan-50" },
-  { icon: Award, value: "50+", label: "Expert Faculty", color: "text-purple-600", bg: "bg-purple-50" },
-  { icon: Building, value: "35+", label: "Years of Excellence", color: "text-emerald-600", bg: "bg-emerald-50" },
+  { icon: Users, value: "800+", label: "Students Enrolled", color: "text-indigo-600", bg: "bg-indigo-50" },
+  { icon: BookOpen, value: "10+", label: "Courses Offered", color: "text-cyan-600", bg: "bg-cyan-50" },
+  { icon: Award, value: "30+", label: "Expert Faculty", color: "text-purple-600", bg: "bg-purple-50" },
+  { icon: Building, value: "15+", label: "Years of Excellence", color: "text-emerald-600", bg: "bg-emerald-50" },
 ];
 
 export default function StatsSection() {

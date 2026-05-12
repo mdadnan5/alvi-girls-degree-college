@@ -72,7 +72,7 @@ export default function ContactPage() {
                 <div className="space-y-4">
                   {[
                     { icon: MapPin, label: "Address", value: "Chak Abusaed Urf Pooremiya, Uttar Pradesh 212402" },
-                    { icon: Phone, label: "Phone", value: "+91 96702 34968" },
+                    { icon: Phone, label: "Phone", value: "+91 9670234968" },
                     { icon: Mail, label: "Email", value: "info@alvigirlsgdc.edu" },
                     { icon: Clock, label: "Office Hours", value: "Mon–Sat: 9 AM – 5 PM" },
                   ].map(({ icon: Icon, label, value }) => (
