@@ -7,6 +7,7 @@ import { IFaculty } from "@/types";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import AdminTable from "@/components/admin/AdminTable";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
@@ -19,7 +20,7 @@ export default function AdminFacultyPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<IFaculty | null>(null);
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FacultyInput>({ resolver: zodResolver(facultySchema) });
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = useForm<FacultyInput>({ resolver: zodResolver(facultySchema) });
 
   useEffect(() => { dispatch(fetchFaculty()); }, [dispatch]);
 
@@ -80,7 +81,7 @@ export default function AdminFacultyPage() {
             <Input label="Designation" placeholder="Professor" error={errors.designation?.message} {...register("designation")} />
             <Input label="Department" placeholder="Mathematics" error={errors.department?.message} {...register("department")} />
           </div>
-          <Input label="Image URL (optional)" placeholder="https://..." {...register("image")} />
+          <ImageUpload label="Photo (optional)" value={watch("image")} onChange={(url) => setValue("image", url)} />
           <div className="space-y-3">
             <p className="text-sm font-medium text-gray-700">Social Links (optional)</p>
             <Input placeholder="LinkedIn URL" {...register("socialLinks.linkedin")} />

@@ -1,9 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
 import { IEvent } from "@/types";
+import { driveImage } from "@/lib/driveImage";
 
 const eventImages = [
   "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80",
@@ -40,11 +40,10 @@ export default function EventsPreview({ events }: { events?: IEvent[] }) {
             >
               {/* Event image */}
               <div className="relative h-48 overflow-hidden">
-                <Image
-                  src={event.image || eventImages[i % eventImages.length]}
+                <img
+                  src={driveImage(event.image) || eventImages[i % eventImages.length]}
                   alt={event.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 {/* Date badge */}

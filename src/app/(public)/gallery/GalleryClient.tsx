@@ -5,6 +5,7 @@ import { X, ImageIcon } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { fetchGallery } from "@/store/slices/gallerySlice";
 import { CardSkeleton } from "@/components/ui/Skeleton";
+import { driveImage } from "@/lib/driveImage";
 
 const categories = ["All", "Campus", "Events", "Sports", "Cultural", "Academic"];
 
@@ -47,11 +48,11 @@ export default function GalleryClient() {
             <div
               key={item._id}
               className="break-inside-avoid cursor-pointer rounded-xl overflow-hidden hover:opacity-90 transition-opacity"
-              onClick={() => setPreview(item.image)}
+              onClick={() => setPreview(driveImage(item.image))}
             >
               <div className="relative aspect-square bg-gradient-to-br from-indigo-100 to-cyan-100 flex items-center justify-center">
                 {item.image ? (
-                  <Image src={item.image} alt={item.category} fill className="object-cover" />
+                  <img src={driveImage(item.image)} alt={item.category} className="w-full h-full object-cover" />
                 ) : (
                   <ImageIcon className="w-8 h-8 text-indigo-300" />
                 )}
@@ -67,7 +68,7 @@ export default function GalleryClient() {
             <X className="w-6 h-6" />
           </button>
           <div className="relative max-w-4xl max-h-[90vh] w-full h-full">
-            <Image src={preview} alt="Preview" fill className="object-contain" />
+            <img src={preview!} alt="Preview" className="w-full h-full object-contain" />
           </div>
         </div>
       )}

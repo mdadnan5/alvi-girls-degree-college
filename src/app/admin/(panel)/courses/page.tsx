@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import AdminTable from "@/components/admin/AdminTable";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
@@ -20,7 +21,7 @@ export default function AdminCoursesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<ICourse | null>(null);
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<CourseInput>({ resolver: zodResolver(courseSchema) });
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = useForm<CourseInput>({ resolver: zodResolver(courseSchema) });
 
   useEffect(() => { dispatch(fetchCourses()); }, [dispatch]);
 
@@ -84,7 +85,7 @@ export default function AdminCoursesPage() {
             <Input label="Fees" placeholder="₹15,000/yr" error={errors.fees?.message} {...register("fees")} />
           </div>
           <Input label="Eligibility" placeholder="10+2 Pass" error={errors.eligibility?.message} {...register("eligibility")} />
-          <Input label="Image URL (optional)" placeholder="https://..." {...register("image")} />
+          <ImageUpload label="Image (optional)" value={watch("image")} onChange={(url) => setValue("image", url)} />
           <div className="flex gap-3 pt-2">
             <Button type="button" variant="secondary" onClick={() => setModalOpen(false)} className="flex-1">Cancel</Button>
             <Button type="submit" loading={isSubmitting} className="flex-1">{editing ? "Update" : "Create"}</Button>

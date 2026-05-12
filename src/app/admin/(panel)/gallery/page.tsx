@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { toast } from "sonner";
 import { Plus, Trash2, ImageIcon } from "lucide-react";
-import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { fetchGallery, createGalleryItem, deleteGalleryItem } from "@/store/slices/gallerySlice";
+import { driveImage } from "@/lib/driveImage";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 
 const categories = ["Campus", "Events", "Sports", "Cultural", "Academic"];
 
@@ -19,7 +20,7 @@ export default function AdminGalleryPage() {
   const { data: items, loading } = useAppSelector((s) => s.gallery);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<GalleryInput>({ resolver: zodResolver(gallerySchema) });
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = useForm<GalleryInput>({ resolver: zodResolver(gallerySchema) });
 
   useEffect(() => { dispatch(fetchGallery()); }, [dispatch]);
 
@@ -62,7 +63,7 @@ export default function AdminGalleryPage() {
           {items.map((item) => (
             <div key={item._id} className="group relative aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-100">
               {item.image ? (
-                <Image src={item.image} alt={item.category} fill className="object-cover" />
+                <img src={driveImage(item.image)} alt={item.category} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <ImageIcon className="w-8 h-8 text-gray-300" />
@@ -81,7 +82,8 @@ export default function AdminGalleryPage() {
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Add Gallery Image">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Input label="Image URL" placeholder="https://images.unsplash.com/..." error={errors.image?.message} {...register("image")} />
+          <ImageUpload label="Image" value={watch("image")} onChange={(url) => setValue("image", url)} />
+          {errors.image && <p className="text-xs text-red-500">{errors.image.message}</p>}
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-gray-700">Category</label>
             <select {...register("category")} className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100">

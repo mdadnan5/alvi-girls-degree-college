@@ -1,9 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { Clock, IndianRupee, ArrowRight } from "lucide-react";
 import { ICourse } from "@/types";
+import { driveImage } from "@/lib/driveImage";
 
 // All verified 200 OK
 const courseImages = [
@@ -41,12 +41,10 @@ export default function CoursesPreview({ courses }: { courses?: ICourse[] }) {
               className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
             >
               <div className="relative h-44 overflow-hidden">
-                <Image
-                  src={course.image || courseImages[i % courseImages.length]}
+                <img
+                  src={driveImage(course.image) || courseImages[i % courseImages.length]}
                   alt={course.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/60 to-transparent" />
                 <div className="absolute bottom-3 left-4">

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { Globe, Share2, Mail } from "lucide-react";
+import { driveImage } from "@/lib/driveImage";
 import { IFaculty } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { fetchFaculty } from "@/store/slices/facultySlice";
@@ -43,7 +44,7 @@ export default function FacultyPage() {
                 <div key={member._id} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center group">
                   <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-4">
                     <img
-                      src={member.image?.replace(/^http:\/\//, 'https://') || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=4F46E5&color=fff&size=128`}
+                      src={driveImage(member.image) || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=4F46E5&color=fff&size=128`}
                       alt={member.name}
                       className="w-full h-full object-cover"
                     />
